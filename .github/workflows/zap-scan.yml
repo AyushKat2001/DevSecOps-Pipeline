@@ -34,8 +34,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: zap-report
-          path: zap_report.html
-          if: always()
+          path: report_html.html
+        if: always()
     
       - name: Stop the application container
         run: docker stop target-app
