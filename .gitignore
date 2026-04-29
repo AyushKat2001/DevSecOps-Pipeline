@@ -1,0 +1,43 @@
+# Node.js
+node_modules/
+npm-debug.log
+coverage/
+.nyc_output
+
+# Environment
+.env
+.env.local
+.env.*
+
+# Docker
+.dockerignore
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+.terraform.lock.hcl
+crash.log
+
+# ZAP
+report_html.html
+report_json.json
+zap.yaml
+
+# Security scan outputs
+trivy-results.sarif
+sbom.json
+*.sarif
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Logs
+*.log
+logs/
