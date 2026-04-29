@@ -88,8 +88,12 @@ jobs:
 
       - name: Run Trivy scan
         uses: aquasecurity/trivy-action@master
+        env:
+            DOCKER_HOST: unix:///var/run/docker.sock
         with:
             image-ref: devsecops-app:latest
+            scan-type: image
+            scanners: vuln
             format: table
             exit-code: '1'
             severity: CRITICAL
@@ -99,7 +103,7 @@ jobs:
       - name: Run Trivy and generate SARIF report
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          image-ref: devsecops-app:latest
           format: sarif
           output: trivy-results.sarif
           ignore-unfixed: true
