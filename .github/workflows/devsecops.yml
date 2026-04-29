@@ -86,28 +86,23 @@ jobs:
       - name: Debug Docker images
         run: docker images
 
-      - name: Run Trivy scan
-        uses: aquasecurity/trivy-action@master
-        env:
-            DOCKER_HOST: unix:///var/run/docker.sock
-        with:
-            image-ref: devsecops-app:latest
-            scan-type: image
-            scanners: vuln
-            format: table
-            exit-code: '1'
-            severity: CRITICAL
-            ignore-unfixed: true
+      - name: Install Trivy
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+            wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+            echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+            sudo apt-get update
+            sudo apt-get install -y trivy
 
+      - name: Run Trivy scan (local image)
+        run: |
+            trivy image --severity CRITICAL --exit-code 1 devsecops-app:latest
 
-      - name: Run Trivy and generate SARIF report
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: devsecops-app:latest
-          format: sarif
-          output: trivy-results.sarif
-          ignore-unfixed: true
+      - name: Generate SARIF report
         if: always()
+        run: |
+            trivy image --format sarif -o trivy-results.sarif devsecops-app:latest
              
       - name: Upload Trivy SARIF to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
