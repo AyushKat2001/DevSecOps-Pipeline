@@ -80,8 +80,7 @@ jobs:
 
       - name: Build docker image
         run: |
-            docker build -t $IMAGE_NAME:$IMAGE_TAG .
-            docker build -t $IMAGE_NAME:latest .
+            docker build -t devsecops-app:latest .
 
       - name: Debug Docker images
         run: docker images
