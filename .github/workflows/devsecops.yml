@@ -121,9 +121,13 @@ jobs:
         with:
           name: sbom
           path: sbom.json
-    
+
+      - name: Tag image for Docker Hub
+        run: |
+          docker tag devsecops-app:latest ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          docker tag devsecops-app:latest ${{ env.IMAGE_NAME }}:latest
+
       - name: Push Docker image to Docker Hub
-        if: success()
         run: |
             echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
             docker push ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
