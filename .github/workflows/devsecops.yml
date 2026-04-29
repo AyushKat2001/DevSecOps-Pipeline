@@ -80,6 +80,9 @@ jobs:
             docker build -t $IMAGE_NAME:$IMAGE_TAG .
             docker build -t $IMAGE_NAME:latest .
 
+      - name: Debug Docker images
+        run: docker images
+
       - name: Run Trivy scan
         uses: aquasecurity/trivy-action@master
         with:
@@ -122,8 +125,8 @@ jobs:
         if: success()
         run: |
           echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-          docker push ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-          docker push ${{ env.IMAGE_NAME }}:latest
+          docker build -t ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
+          docker build -t ${{ env.IMAGE_NAME }}:latest .
     
   sign-image:
     name: Sign Container Image (Cosign)
