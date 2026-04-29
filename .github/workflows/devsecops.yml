@@ -55,16 +55,16 @@ jobs:
             with:
               directory: terraform/
               framework: terraform
-              output-format: cli
-              soft-fail: true
+              output_format: cli
+              soft_fail: true
         
           - name: Run Checkov on Dockerfiles
             uses: bridgecrewio/checkov-action@master
             with:
               directory: .
               framework: dockerfile
-              output-format: cli
-              soft-fail: true
+              output_format: cli
+              soft_fail: true
   
   build-and-scan:
     name: Build + Trivy Container Scan
@@ -87,7 +87,7 @@ jobs:
           format: table
           exit-code: '1'
           severity: CRITICAL
-          ignore-unfixed: true
+          ignore_unfixed: true
 
 
       - name: Run Trivy and generate SARIF report
@@ -96,7 +96,7 @@ jobs:
           image-ref: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           format: sarif
           output: trivy-results.sarif
-          ignore-unfixed: true
+          ignore_unfixed: true
         if: always()
              
       - name: Upload Trivy SARIF to GitHub Security tab
