@@ -1,0 +1,42 @@
+name: OWASP ZAP Scan
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  zap-scan:
+    name: OWASP ZAP Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build and run the application
+        run: |
+          docker build -t devsecops-app .
+          docker run -d \
+            --name target-app \
+            -p 3000:3000 \
+            devsecops-app
+          sleep 10
+          curl -f http://localhost:3000/health
+
+      - name: Run OWASP ZAP baseline Scan
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: 'http://localhost:3000'
+          rule-file-name: 'zap/rules.tsv'
+          cmd_options: '-I'
+
+      - name: Upload ZAP report
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-report
+          path: zap_report.html
+          if: always()
+    
+      - name: Stop the application container
+        run: docker stop target-app
+        if: always()
