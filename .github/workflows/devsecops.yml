@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  IMAGE_NAME: AyushKat2001/devsecops-app
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops-app
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
