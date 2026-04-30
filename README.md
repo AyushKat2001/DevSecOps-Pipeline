@@ -5,13 +5,6 @@
 **A security-first CI/CD pipeline where every deployment passes through automated security gates.**
 Critical vulnerabilities, IaC misconfigurations, and web vulnerabilities block the pipeline entirely — nothing insecure gets deployed.
 
-![DevSecOps](https://github.com/ayush272001/devsecops-pipeline/actions/workflows/devsecops.yml/badge.svg)
-![ZAP Scan](https://github.com/ayush272001/devsecops-pipeline/actions/workflows/zap-scan.yml/badge.svg)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
-![Trivy](https://img.shields.io/badge/Trivy-1904DA?style=flat&logo=aquasecurity&logoColor=white)
-![OWASP](https://img.shields.io/badge/OWASP_ZAP-000000?style=flat&logo=owasp&logoColor=white)
-![Cosign](https://img.shields.io/badge/Cosign-Sigstore-blue?style=flat)
-
 </div>
 
 ---
@@ -155,9 +148,17 @@ devsecops-pipeline/
   </tr>
 </table>
 
+---
+![pic](screenshots/sec-ops-pipeline.png)
+
+--- 
+
 **`zap-scan.yml`** — runs separately:
 
 Starts the app in Docker, runs OWASP ZAP baseline scan against all live endpoints, uploads full HTML report as a GitHub Actions artifact.
+
+---
+![pic](screenshots/zap-pipeline.png)
 
 ---
 
@@ -172,6 +173,9 @@ USER nodeuser                # App never runs as root
 HEALTHCHECK ...              # Container self-reports its own health status
 ENTRYPOINT ["dumb-init"]     # Proper process management
 ```
+---
+### Error Detected by Checkov
+![pic](screenshots/errors.png)
 
 ---
 
@@ -208,6 +212,12 @@ Every pipeline run produces four downloadable artifacts — found under **Action
 </table>
 
 ---
+![pic](screenshots/sec-ops-artifacts.png)
+
+#### Zap Scan Artifact
+![pic](screenshots/zap-artifact.png)
+
+---
 
 ## Running Locally
 
@@ -232,6 +242,10 @@ Visit `http://localhost:3000/health`:
 ```json
 { "status": "ok", "timestamp": "..." }
 ```
+
+---
+### Image Upload onto DockerHub
+![pic](screenshots/dockerhub.png)
 
 ---
 
